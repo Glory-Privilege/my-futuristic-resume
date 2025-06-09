@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KHALID - Quantum Cloud Architect</title>
+    <!-- Favicon - A stylized quantum or cloud icon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300F0FF'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93V17c-3.14-.55-5.69-3.1-6.24-6.24H4.07C4.59 15.16 7.82 18.4 12 18.93zm6.24-6.24H17c.55 3.14 3.1 5.69 6.24 6.24v.93c-4.18-.52-7.41-3.75-7.93-7.93zm-1.07-6.24V4.07C15.16 4.59 18.4 7.82 18.93 12h-.93c-.55-3.14-3.1-5.69-6.24-6.24zm-6.24-1.07V6.93c-3.14.55-5.69 3.1-6.24 6.24H4.07C4.59 8.84 7.82 5.6 12 5.07z'/%3E%3C/svg%3E" type="image/svg+xml">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Orbitron for headings, Inter for body text -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons (for elegant SVG icons) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050510; /* Very dark almost black blue */
+            color: #e0e0f0; /* Light cool gray text */
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif; /* Futuristic heading font */
+            text-transform: uppercase;
+        }
+
+        /* Animated Global Background Grid & Flow */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-flow 25s linear infinite;
+            z-index: -2; /* Below background-pulse */
+            pointer-events: none;
+        }
+
+        @keyframes grid-flow {
+            from { background-position: 0px 0px; }
+            to { background-position: 50px 50px; }
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(0, 240, 255, 0.1), rgba(138, 43, 226, 0.05), transparent 70%); /* Cyan & violet pulse */
+            animation: background-pulse 35s infinite alternate ease-in-out;
+            z-index: -1; /* Above grid, below content */
+            pointer-events: none;
+        }
+
+        @keyframes background-pulse {
+            0% { transform: scale(0.9) translate(0%, 0%); opacity: 0.8; }
+            50% { transform: scale(1.1) translate(15%, 15%); opacity: 1; }
+            100% { transform: scale(0.9) translate(0%, 0%); opacity: 0.8; }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #101020;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00F0FF; /* Electric cyan */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8A2BE2; /* Violet on hover */
+        }
+
+        /* Text Glow */
+        .text-glow-cyan {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.7), 0 0 20px rgba(0, 240, 255, 0.5), 0 0 30px rgba(0, 240, 255, 0.3);
+        }
+        .text-glow-violet {
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.7), 0 0 20px rgba(138, 43, 226, 0.5), 0 0 30px rgba(138, 43, 226, 0.3);
+        }
+
+        /* Section Dividers */
+        .section-divider {
+            height: 3px; /* Thicker */
+            background: linear-gradient(to right, #00F0FF, #8A2BE2, transparent); /* Multi-color gradient */
+            width: 120px; /* Longer */
+            margin: 1.5rem 0;
+            border-radius: 9999px;
+            box-shadow: 0 0 8px rgba(0, 240, 255, 0.5); /* Subtle glow */
+        }
+
+        /* Buttons */
+        .btn-primary-futuristic {
+            background: linear-gradient(45deg, #00F0FF, #8A2BE2);
+            box-shadow: 0 5px 20px rgba(0, 240, 255, 0.4);
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: skewX(-5deg); /* Slight futuristic skew */
+        }
+        .btn-primary-futuristic:hover {
+            background: linear-gradient(45deg, #8A2BE2, #00F0FF);
+            box-shadow: 0 8px 25px rgba(0, 240, 255, 0.6);
+            transform: translateY(-3px) scale(1.02) skewX(-5deg);
+        }
+        .btn-primary-futuristic span {
+            display: block;
+            transform: skewX(5deg); /* Un-skew text */
+        }
+
+        .btn-secondary-futuristic {
+            background: rgba(138, 43, 226, 0.1); /* Violet transparent background */
+            border: 2px solid #8A2BE2;
+            color: #00F0FF;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: skewX(-5deg);
+        }
+        .btn-secondary-futuristic:hover {
+            background: #8A2BE2;
+            color: #e0e0f0;
+            border-color: #00F0FF;
+            transform: translateY(-3px) scale(1.02) skewX(-5deg);
+        }
+        .btn-secondary-futuristic span {
+            display: block;
+            transform: skewX(5deg);
+        }
+
+        /* Cards */
+        .card-futuristic {
+            background-color: rgba(16, 16, 32, 0.8); /* Darker transparent bg */
+            border: 1px solid rgba(0, 240, 255, 0.2); /* Subtle cyan border */
+            border-radius: 1rem; /* More rounded */
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(0, 240, 255, 0.1); /* Deeper shadow, inner glow */
+        }
+        .card-futuristic:hover {
+            border-color: #00F0FF; /* Solid cyan border on hover */
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.6), inset 0 0 15px rgba(0, 240, 255, 0.3); /* Stronger glow */
+            transform: translateY(-10px) scale(1.01); /* More pronounced lift */
+        }
+
+        /* Highlight Text */
+        .text-accent-cyan {
+            color: #00F0FF;
+        }
+        .text-accent-violet {
+            color: #8A2BE2;
+        }
+
+        /* Animated Underline */
+        .animated-underline {
+            position: relative;
+            display: inline-block;
+        }
+        .animated-underline::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #00F0FF; /* Cyan underline */
+            transition: width 0.3s ease-out;
+        }
+        .animated-underline:hover::after {
+            width: 100%;
+        }
+
+        /* Icons in lists */
+        .list-icon {
+            width: 1.5rem; /* Slightly larger */
+            height: 1.5rem;
+            margin-right: 0.75rem; /* More space */
+            color: #00F0FF; /* Cyan icons */
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.5)); /* Icon glow */
+        }
+
+        /* Form Inputs */
+        .form-input-futuristic {
+            background-color: #1a1a30;
+            border: 1px solid #3b3b5c;
+            color: #e0e0f0;
+            padding: 0.85rem 1.2rem; /* More padding */
+            border-radius: 0.5rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .form-input-futuristic:focus {
+            outline: none;
+            border-color: #00F0FF; /* Cyan border on focus */
+            box-shadow: 0 0 0 4px rgba(0, 240, 255, 0.3); /* Stronger glow */
+        }
+
+        /* Animations */
+        .animate-in-hero-text {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slide-in-fade 1s forwards cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .animate-in-hero-text-1 { animation-delay: 0.2s; }
+        .animate-in-hero-text-2 { animation-delay: 0.4s; }
+        .animate-in-hero-text-3 { animation-delay: 0.6s; }
+
+        @keyframes slide-in-fade {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-appear {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        .section-appear.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero pattern specific to the section */
+        .hero-section-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            opacity: 0.15; /* More visible pattern */
+            pointer-events: none;
+        }
+        .hero-section-pattern .line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+            height: 1px;
+            animation: line-flow 15s linear infinite;
+        }
+        @keyframes line-flow {
+            0% { transform: translateX(-100%) translateY(var(--y)); }
+            100% { transform: translateX(100%) translateY(var(--y)); }
+        }
+
+        /* New: Skill Progress Bar Animation */
+        .skill-bar-container {
+            background-color: #202035;
+            border-radius: 0.5rem;
+            height: 0.75rem; /* h-3 */
+            overflow: hidden;
+            margin-top: 0.5rem;
+            position: relative;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3); /* Inner shadow for depth */
+        }
+
+        .skill-bar-fill {
+            background: linear-gradient(90deg, #8A2BE2, #00F0FF); /* Violet to Cyan gradient */
+            height: 100%;
+            width: 0%; /* Start at 0% */
+            border-radius: 0.5rem;
+            transition: width 1.5s ease-out; /* Animation duration */
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.6); /* Stronger glow */
+        }
+
+        .skill-bar-container.is-visible .skill-bar-fill {
+            width: var(--skill-level); /* Fill to skill level */
+        }
+
+        /* Hero Sphere Internal Glow and Layers */
+        @keyframes hero-sphere-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.5), inset 0 0 30px rgba(0, 240, 255, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.8), inset 0 0 40px rgba(0, 240, 255, 0.5); }
+        }
+        .hero-sphere-glow {
+            animation: hero-sphere-glow 5s infinite alternate ease-in-out;
+        }
+
+        /* More complex inner rings for the sphere */
+        .inner-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid;
+            opacity: 0.1;
+            box-shadow: 0 0 5px currentColor;
+        }
+        .inner-ring-1 {
+            width: 90%; height: 90%; border-color: #00F0FF;
+            animation: spin-slow 20s linear infinite reverse;
+        }
+        .inner-ring-2 {
+            width: 70%; height: 70%; border-color: #8A2BE2;
+            animation: spin-slow 15s linear infinite;
+        }
+
+        /* Global slow spin for elements */
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 60s linear infinite; /* Adjust duration for subtle speed */
+        }
+        .animate-spin-reverse-slow {
+            animation: spin-slow 60s linear infinite reverse; /* Adjust duration for subtle speed */
+        }
+
+        /* Orbiting Elements */
+        .orbiter-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            animation: container-spin 30s linear infinite; /* Container itself spins */
+        }
+
+        @keyframes container-spin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .orbiter {
+            position: absolute;
+            background-color: #00F0FF; /* Cyan orbiter */
+            border-radius: 50%;
+            filter: blur(0.5px) drop-shadow(0 0 5px rgba(0, 240, 255, 0.8)); /* Subtle glow */
+            animation: orbiter-pulse 3s infinite alternate ease-in-out;
+        }
+
+        @keyframes orbiter-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
+        /* Specific Orbiter Positions & Sizes */
+        .orbiter-1 {
+            width: 8px; height: 8px;
+            top: 10%; left: 50%;
+            transform: translateX(-50%);
+            animation: orbiter-path-1 20s linear infinite;
+        }
+        .orbiter-2 {
+            width: 6px; height: 6px;
+            top: 50%; left: 90%;
+            transform: translateY(-50%);
+            animation: orbiter-path-2 18s linear infinite reverse;
+        }
+        .orbiter-3 {
+            width: 10px; height: 10px;
+            bottom: 10%; left: 20%;
+            transform: translateX(-50%);
+            animation: orbiter-path-3 22s linear infinite;
+        }
+
+        @keyframes orbiter-path-1 {
+            0% { transform: translate(-50%, -50%) rotate(0deg) translateX(120px) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) translateX(120px) rotate(360deg); }
+        }
+        @keyframes orbiter-path-2 {
+            0% { transform: translate(-50%, -50%) rotate(0deg) translateX(150px) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) translateX(150px) rotate(360deg); }
+        }
+        @keyframes orbiter-path-3 {
+            0% { transform: translate(-50%, -50%) rotate(0deg) translateX(100px) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) translateX(100px) rotate(360deg); }
+        }
+
+        /* Adjust positions for responsiveness */
+        @media (max-width: 768px) {
+            .orbiter-1 { animation: orbiter-path-1-sm 20s linear infinite; }
+            .orbiter-2 { animation: orbiter-path-2-sm 18s linear infinite reverse; }
+            .orbiter-3 { animation: orbiter-path-3-sm 22s linear infinite; }
+
+            @keyframes orbiter-path-1-sm {
+                0% { transform: translate(-50%, -50%) rotate(0deg) translateX(60px) rotate(0deg); }
+                100% { transform: translate(-50%, -50%) rotate(360deg) translateX(60px) rotate(360deg); }
+            }
+            @keyframes orbiter-path-2-sm {
+                0% { transform: translate(-50%, -50%) rotate(0deg) translateX(75px) rotate(0deg); }
+                100% { transform: translate(-50%, -50%) rotate(360deg) translateX(75px) rotate(360deg); }
+            }
+            @keyframes orbiter-path-3-sm {
+                0% { transform: translate(-50%, -50%) rotate(0deg) translateX(50px) rotate(0deg); }
+                100% { transform: translate(-50%, -50%) rotate(360deg) translateX(50px) rotate(360deg); }
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation Bar -->
+    <header class="bg-[#101020] py-4 px-6 fixed w-full z-10 shadow-lg border-b border-[#202035] backdrop-blur-md bg-opacity-80">
+        <nav class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-3xl font-extrabold text-accent-cyan hover:text-accent-violet transition duration-300 tracking-wider">KHALID</a>
+            <!-- Desktop Navigation Links -->
+            <ul class="hidden md:flex space-x-10">
+                <li><a href="#about" class="text-gray-300 hover:text-accent-cyan transition duration-300 text-lg font-medium">About</a></li>
+                <li><a href="#projects" class="text-gray-300 hover:text-accent-cyan transition duration-300 text-lg font-medium">Work</a></li>
+                <li><a href="#skills" class="text-gray-300 hover:text-accent-cyan transition duration-300 text-lg font-medium">Skills</a></li>
+                <li><a href="#contact" class="text-gray-300 hover:text-accent-cyan transition duration-300 text-lg font-medium">Connect</a></li>
+            </ul>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-300 hover:text-accent-cyan focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu-overlay" class="hidden md:hidden fixed inset-0 bg-[#050510] bg-opacity-95 flex flex-col items-center justify-center space-y-10 z-20">
+            <button id="close-mobile-menu" class="absolute top-8 right-8 text-gray-300 hover:text-accent-cyan focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+            <a href="#about" class="text-gray-300 hover:text-accent-cyan transition duration-300 text-4xl font-bold" onclick="document.getElementById('mobile-menu-overlay').classList.add('hidden')">About</a>
+            <a href="#projects" class="text-gray-300 hover:text-accent-cyan transition duration-300 text-4xl font-bold" onclick="document.getElementById('mobile-menu-overlay').classList.add('hidden')">Work</a>
+            <a href="#skills" class="text-gray-300 hover:text-accent-cyan transition duration-300 text-4xl font-bold" onclick="document.getElementById('mobile-menu-overlay').classList.add('hidden')">Skills</a>
+            <a href="#contact" class="text-gray-300 hover:text-accent-cyan transition duration-300 text-4xl font-bold" onclick="document.getElementById('mobile-menu-overlay').classList.add('hidden')">Connect</a>
+        </div>
+    </header>
+
+    <main class="pt-20">
+        <!-- Hero Section -->
+        <section id="hero" class="relative min-h-screen flex items-center justify-center text-center px-4 md:px-8 bg-gradient-to-br from-[#050510] to-[#101020] overflow-hidden">
+            <!-- Animated Hero Section Pattern -->
+            <div class="hero-section-pattern"></div>
+
+            <div class="relative z-10 max-w-6xl mx-auto py-24">
+                <div class="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
+                    <div class="text-left md:text-left space-y-8">
+                        <p class="text-2xl md:text-3xl text-gray-300 font-medium animate-in-hero-text animate-in-hero-text-1">Hello, I'm <span class="text-accent-cyan font-extrabold text-glow-cyan">KHALID</span></p>
+                        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight text-white text-glow-violet animate-in-hero-text animate-in-hero-text-2">
+                            A Cloud Architect<br>
+                            Building <span class="text-accent-cyan">Secure & Scalable</span> Cloud Solutions
+                        </h1>
+                        <div class="flex flex-col sm:flex-row space-y-5 sm:space-y-0 sm:space-x-6 mt-10 animate-in-hero-text animate-in-hero-text-3">
+                            <a href="#projects" class="inline-flex items-center justify-center px-10 py-4 rounded-lg text-xl font-semibold text-white btn-primary-futuristic">
+                                <span>See My Work</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon lucide lucide-arrow-right ml-3"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                            </a>
+                            <a href="#contact" class="inline-flex items-center justify-center px-10 py-4 rounded-lg text-xl font-semibold btn-secondary-futuristic">
+                                <span>Get In Touch</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon lucide lucide-mail ml-3"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hidden md:flex justify-center items-center relative">
+                        <!-- Futuristic Sphere / Data Flow Visual -->
+                        <div class="w-96 h-96 lg:w-[480px] lg:h-[480px] bg-gradient-to-br from-indigo-800 to-purple-900 rounded-full flex items-center justify-center opacity-80 shadow-2xl animate-spin-slow hero-sphere-glow" style="animation-duration: 40s;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-accent-cyan opacity-90 lucide lucide-cloud-cog">
+                                <path d="M12.5 19.5A7.5 7.5 0 0 1 4 14.5C2.5 13.5 2 12 2 12c0-1.5 1-3 3-4.5S9 5 12 5c3 0 4.5 1.5 6 3s3 3 3 4.5h0c.5 0 1 .5 1.5 1s.5 1 0 1.5c-.5.5-1.5 1-2.5 1.5a7.5 7.5 0 0 1-1.5 2" />
+                                <circle cx="12" cy="12" r="3" />
+                                <path d="M18 13.06V10h-2.22" />
+                                <path d="M18 10h-2.22c-.62 0-1.22.25-1.66.72L13 12l.53.53a2 2 0 0 1 0 2.83l-.93.93a2 2 0 0 1-2.83 0L9 15" />
+                                <path d="M12 18.06V22h-2.22" />
+                                <path d="M12 22h-2.22c-.62 0-1.22.25-1.66.72L7 24l.53.53a2 2 0 0 1 0 2.83l-.93.93a2 2 0 0 1-2.83 0L3 27" />
+                                <path d="M6 13.06V10h-2.22" />
+                                <path d="M6 10h-2.22c-.62 0-1.22.25-1.66.72L3 12l.53.53a2 2 0 0 1 0 2.83l-.93.93a2 2 0 0 1-2.83 0L1 17" />
+                            </svg>
+                            <!-- Inner glowing rings -->
+                            <div class="absolute inset-0 rounded-full border-2 border-dashed border-accent-cyan opacity-20 animate-spin-reverse-slow inner-ring inner-ring-1" style="animation-duration: 25s; filter: blur(1px);"></div>
+                            <div class="absolute inset-8 rounded-full border-2 border-dotted border-accent-violet opacity-20 animate-spin-slow inner-ring inner-ring-2" style="animation-duration: 30s; filter: blur(0.5px);"></div>
+                            <!-- Orbiting Elements -->
+                            <div class="orbiter-container">
+                                <div class="orbiter orbiter-1"></div>
+                                <div class="orbiter orbiter-2"></div>
+                                <div class="orbiter orbiter-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section id="about" class="container mx-auto px-8 py-20 text-center section-appear">
+            <h2 class="text-4xl font-bold mb-4 text-accent-cyan text-glow-cyan">About Me</h2>
+            <div class="section-divider mx-auto mb-10"></div>
+            <div class="max-w-4xl mx-auto text-gray-300 text-lg leading-relaxed">
+                <p class="mb-4">
+                    I am an <span class="text-accent-violet font-semibold">AWS Certified Cloud Practitioner</span>, working with cloud infrastructure and DevOps methods. My background in Cyber-Security helps me build strong and secure systems.
+                </p>
+                <p class="mb-4">
+                    I focus on automating infrastructure, using cloud resources efficiently, and setting up smooth CI/CD pipelines. I aim to create scalable, reliable, and high-performing cloud solutions that bring great value.
+                </p>
+                <p>
+                    I am skilled in scripting, working with Linux, and using tools like Terraform and Docker for Infrastructure as Code. I am always learning new technologies to solve complex problems and create innovative systems.
+                </p>
+            </div>
+            <!-- Time Zone and Tech Expertise Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-16 max-w-5xl mx-auto">
+                <div class="card-futuristic p-8 text-left">
+                    <h3 class="text-2xl font-semibold text-accent-cyan mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="list-icon text-accent-violet"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M12 12H6a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2h6l-3-3"/><path d="M12 12c-2.4-.94-4-2.85-4-5A2 2 0 0 1 10 5"/><path d="M12 12c2.4.94 4 2.85 4 5A2 2 0 0 1 14 19"/></svg>
+                        Location
+                    </h3>
+                    <p class="text-gray-400 text-lg">
+                        Based in: <span class="text-white font-medium">Greater Noida, India</span>.<br>
+                        Available for: <span class="text-white font-medium">Remote work Worldwide</span>.
+                    </p>
+                </div>
+                <div class="card-futuristic p-8 text-left">
+                    <h3 class="text-2xl font-semibold text-accent-cyan mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="list-icon text-accent-violet"><path d="M14 9V5a3 3 0 0 0-3-3H4a2 2 0 0 0-2 2v7.1A8 8 0 0 0 18.1 18l.4 0H20a2 2 0 0 0 2-2V10a3 3 0 0 0-3-3h-1.5"/><path d="M8 11.52v.98"/><path d="M7 16H4a2 2 0 0 1-2-2v-3.22"/><path d="M16 16v.98"/><path d="M15 21h-2a2 2 0 0 1-2-2v-3.22"/><path d="M22 13.52v.98"/></svg>
+                        Tech Skills
+                    </h3>
+                    <p class="text-gray-400 text-lg">
+                        I specialize in <span class="text-white font-medium">AWS services</span>, <span class="text-white font-medium">Docker</span> for containers, <span class="text-white font-medium">Terraform</span> for automation, and using the latest tools for deployments.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="container mx-auto px-8 py-20 text-center bg-[#101020] rounded-xl my-10 shadow-xl border border-[#202035] section-appear">
+            <h2 class="text-4xl font-bold mb-4 text-accent-cyan text-glow-cyan">Education</h2>
+            <div class="section-divider mx-auto mb-10"></div>
+            <div class="max-w-3xl mx-auto text-gray-300 text-lg">
+                <div class="card-futuristic p-8">
+                    <h3 class="text-2xl font-semibold text-accent-violet mb-2">Bachelors Of Computer Applications (Cyber-Security)</h3>
+                    <p class="text-xl text-gray-400 mb-2">Galgotias University</p>
+                    <p class="text-md text-gray-500">2023 - 2026</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="container mx-auto px-8 py-20 text-center section-appear">
+            <h2 class="text-4xl font-bold mb-4 text-accent-cyan text-glow-cyan">My Projects</h2>
+            <div class="section-divider mx-auto mb-10"></div>
+            <div class="max-w-6xl mx-auto space-y-10">
+                <!-- Project 1: Static Website Hosting on S3 -->
+                <div class="card-futuristic p-8 text-left">
+                    <h3 class="text-2xl font-semibold text-accent-violet mb-2">Secure Website Hosting on S3</h3>
+                    <p class="text-gray-400 mb-4">
+                        I built and hosted a secure static website on <span class="font-medium text-white">Amazon S3</span>. I set up public access and bucket rules, and used <span class="font-medium text-white">CloudFront (CDN)</span> and <span class="font-medium text-white">HTTPS</span> to make it fast and secure for users everywhere.
+                    </p>
+                    <div class="flex flex-wrap gap-3 mb-4">
+                        <span class="bg-[#202035] text-accent-cyan px-4 py-1.5 rounded-full text-sm border border-[#00F0FF] border-opacity-30">AWS S3</span>
+                        <span class="bg-[#202035] text-accent-cyan px-4 py-1.5 rounded-full text-sm border border-[#00F0FF] border-opacity-30">CloudFront</span>
+                        <span class="bg-[#202035] text-accent-cyan px-4 py-1.5 rounded-full text-sm border border-[#00F0FF] border-opacity-30">HTTPS</span>
+                        <span class="bg-[#202035] text-accent-cyan px-4 py-1.5 rounded-full text-sm border border-[#00F0FF] border-opacity-30">HTML/CSS</span>
+                    </div>
+                    <a href="#" class="text-accent-cyan hover:text-accent-violet transition duration-300 font-medium inline-flex items-center animated-underline text-lg">
+                        View Project
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon lucide lucide-arrow-right ml-2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                </div>
+
+                <!-- Project 2: CI/CD Pipeline with GitHub Actions -->
+                <div class="card-futuristic p-8 text-left">
+                    <h3 class="text-2xl font-semibold text-accent-violet mb-2">CI/CD Pipeline with GitHub Actions</h3>
+                    <p class="text-gray-400 mb-4">
+                        I created an automated CI/CD pipeline for Python and Node.js apps using <span class="font-medium text-white">GitHub Actions</span>. This setup automatically builds and tests code, making software delivery faster and more reliable with no downtime.
+                    </p>
+                    <div class="flex flex-wrap gap-3 mb-4">
+                        <span class="bg-[#202035] text-accent-cyan px-4 py-1.5 rounded-full text-sm border border-[#00F0FF] border-opacity-30">GitHub Actions</span>
+                        <span class="bg-[#202035] text-accent-cyan px-4 py-1.5 rounded-full text-sm border border-[#00F0FF] border-opacity-30">CI/CD</span>
+                        <span class="bg-[#202035] text-accent-cyan px-4 py-1.5 rounded-full text-sm border border-[#00F0FF] border-opacity-30">Python/Node.js</span>
+                        <span class="bg-[#202035] text-accent-cyan px-4 py-1.5 rounded-full text-sm border border-[#00F0FF] border-opacity-30">Automated Testing</span>
+                    </div>
+                    <a href="https://github.com/khalidameen872" target="_blank" rel="noopener noreferrer" class="text-accent-cyan hover:text-accent-violet transition duration-300 font-medium inline-flex items-center animated-underline text-lg">
+                        View on GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon lucide lucide-external-link ml-2"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                    </a>
+                </div>
+
+                <!-- Placeholder for more projects -->
+                <div class="card-futuristic p-8 text-left">
+                    <h3 class="text-2xl font-semibold text-accent-violet mb-2">More Projects Coming Soon...</h3>
+                    <p class="text-gray-400 mb-4">
+                        I am currently developing new projects that include advanced machine learning and secure encryption technologies.
+                    </p>
+                    <a href="#" class="text-accent-cyan hover:text-accent-violet transition duration-300 font-medium inline-flex items-center animated-underline text-lg">
+                        Stay Updated
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon lucide lucide-arrow-right ml-2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications & Achievements Section -->
+        <section id="certifications" class="container mx-auto px-8 py-20 text-center bg-[#101020] rounded-xl my-10 shadow-xl border border-[#202035] section-appear">
+            <h2 class="text-4xl font-bold mb-4 text-accent-cyan text-glow-cyan">Certifications</h2>
+            <div class="section-divider mx-auto mb-10"></div>
+            <div class="max-w-4xl mx-auto text-gray-300 text-lg">
+                <ul class="space-y-6 text-left">
+                    <li class="flex items-center card-futuristic p-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="list-icon text-yellow-400"><circle cx="12" cy="8" r="7"/><path d="M12 20v4"/><path d="m10.5 17.5 2 2.5.5.5.5-.5 2-2.5"/><path d="M11 17h2"/></svg>
+                        <a href="https://www.credly.com/badges/c465b8b0-c50a-413d-b9dc-d1a8fbf66c53/linked_in?t=swmlu5" target="_blank" rel="noopener noreferrer" class="hover:text-accent-cyan transition duration-300 animated-underline text-lg">AWS Certified Cloud Practitioner</a>
+                    </li>
+                    <li class="flex items-center card-futuristic p-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="list-icon text-orange-400"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 6c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/><path d="M10 18a2 2 0 1 1 4 0"/></svg>
+                        <a href="https://www.linkedin.com/posts/khalid-ameen-a6674a255_entrepreneurship-iitmadras-nptel-activity-7313901543466942464-kIM9?utm_source=social_share_send&utm_medium=android_app&rcm=ACoAAD7vsW4BgDKt7Y8Dx9K4tmXsfHfTqR4M57U&utm_campaign=copy_link" target="_blank" rel="noopener noreferrer" class="hover:text-accent-cyan transition duration-300 animated-underline text-lg">NPTEL Entrepreneurship Certification</a>
+                    </li>
+                    <li class="flex items-center card-futuristic p-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="list-icon text-purple-400"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <a href="https://www.linkedin.com/posts/khalid-ameen-a6674a255_aws-cloudcomputing-devops-activity-7310758433626959872-ClyF?utm_source=social_share_send&utm_medium=android_app&rcm=ACoAAD7vsW4BgDKt7Y8Dx9K4tmXsfHfTqR4M57U&utm_campaign=copy_link" target="_blank" rel="noopener noreferrer" class="hover:text-accent-cyan transition duration-300 animated-underline text-lg">AWS Technical Essential Completion Certificate</a>
+                    </li>
+                    <li class="flex items-center card-futuristic p-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="list-icon text-emerald-400"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.0 0 0 1 0 9H17.5Z"/></svg>
+                        <a href="https://www.credly.com/posts/khalid-ameen-a6674a255_aws-cloudcomputing-devops-activity-7310758433626959872-ClyF?utm_source=social_share_send&utm_medium=android_app&rcm=ACoAAD7vsW4BgDKt7Y8Dx9K4tmXsfHfTqR4M57U&utm_campaign=copy_link" target="_blank" rel="noopener noreferrer" class="hover:text-accent-cyan transition duration-300 animated-underline text-lg">AWS Cloud Computing Completion Certificate</a>
+                    </li>
+                    <li class="flex items-center card-futuristic p-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="list-icon text-rose-400"><rect x="16" y="2" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><path d="M12 10v4"/><path d="M8 20V8"/><path d="M20 8v4"/><path d="M16 10h-2c-2.8 0-4 2-4 4v2"/><path d="M10 16H8"/></svg>
+                        <a href="https://www.credly.com/badges/174c9668-a5aa-4715-906f-222a20100b06/linked_in?t=swtvb1" target="_blank" rel="noopener noreferrer" class="hover:text-accent-cyan transition duration-300 animated-underline text-lg">CISCO Basic Networking Certification</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="container mx-auto px-8 py-20 text-center section-appear">
+            <h2 class="text-4xl font-bold mb-4 text-accent-cyan text-glow-cyan">My Skills</h2>
+            <div class="section-divider mx-auto mb-10"></div>
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Skill Category: Cloud -->
+                <div class="card-futuristic p-8">
+                    <h3 class="text-2xl font-semibold text-accent-violet mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="list-icon text-accent-cyan"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 0 1 0 9H17.5Z"/></svg>
+                        Cloud Computing
+                    </h3>
+                    <ul class="text-gray-300 text-left space-y-3">
+                        <li class="flex flex-col items-start">
+                            <span class="text-accent-cyan font-medium">Amazon Web Services (AWS)</span>
+                            <div class="skill-bar-container w-full" data-skill-level="90%">
+                                <div class="skill-bar-fill"></div>
+                            </div>
+                        </li>
+                        <li class="flex flex-col items-start">
+                            <span class="text-accent-cyan font-medium">AWS CloudFormation</span>
+                            <div class="skill-bar-container w-full" data-skill-level="85%">
+                                <div class="skill-bar-fill"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Skill Category: CI/CD -->
+                <div class="card-futuristic p-8">
+                    <h3 class="text-2xl font-semibold text-accent-violet mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="list-icon text-accent-cyan"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>
+                        CI/CD
+                    </h3>
+                    <ul class="text-gray-300 text-left space-y-3">
+                        <li class="flex flex-col items-start">
+                            <span class="text-accent-cyan font-medium">Git (GitHub, GitLab)</span>
+                            <div class="skill-bar-container w-full" data-skill-level="95%">
+                                <div class="skill-bar-fill"></div>
+                            </div>
+                        </li>
+                        <li class="flex flex-col items-start">
+                            <span class="text-accent-cyan font-medium">Jenkins Basics</span>
+                            <div class="skill-bar-container w-full" data-skill-level="70%">
+                                <div class="skill-bar-fill"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Skill Category: Containerization -->
+                <div class="card-futuristic p-8">
+                    <h3 class="text-2xl font-semibold text-accent-violet mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="list-icon text-accent-cyan"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+                        Containerization
+                    </h3>
+                    <ul class="text-gray-300 text-left space-y-3">
+                        <li class="flex flex-col items-start">
+                            <span class="text-accent-cyan font-medium">Docker</span>
+                            <div class="skill-bar-container w-full" data-skill-level="88%">
+                                <div class="skill-bar-fill"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Skill Category: IAAC -->
+                <div class="card-futuristic p-8">
+                    <h3 class="text-2xl font-semibold text-accent-violet mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="list-icon text-accent-cyan"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 3v18"/><path d="M16 3v18"/></svg>
+                        Infrastructure as Code (IaC)
+                    </h3>
+                    <ul class="text-gray-300 text-left space-y-3">
+                        <li class="flex flex-col items-start">
+                            <span class="text-accent-cyan font-medium">Terraform</span>
+                            <div class="skill-bar-container w-full" data-skill-level="82%">
+                                <div class="skill-bar-fill"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Skill Category: Programming Language -->
+                <div class="card-futuristic p-8">
+                    <h3 class="text-2xl font-semibold text-accent-violet mb-4 inline-flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="list-icon text-accent-cyan"><path d="M18 16.7L21.5 12 18 7.3"/><path d="M6 7.3 2.5 12 6 16.7"/><path d="M14.5 4l-5 16"/></svg>
+                        Programming Languages
+                    </h3>
+                    <ul class="text-gray-300 text-left space-y-3">
+                        <li class="flex flex-col items-start">
+                            <span class="text-accent-cyan font-medium">Python</span>
+                            <div class="skill-bar-container w-full" data-skill-level="92%">
+                                <div class="skill-bar-fill"></div>
+                            </div>
+                        </li>
+                        <li class="flex flex-col items-start">
+                            <span class="text-accent-cyan font-medium">Linux (Shell Scripting)</span>
+                            <div class="skill-bar-container w-full" data-skill-level="80%">
+                                <div class="skill-bar-fill"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Skill Category: Networking -->
+                <div class="card-futuristic p-8">
+                    <h3 class="text-2xl font-semibold text-accent-violet mb-4 inline-flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="list-icon text-accent-cyan"><circle cx="6" cy="19" r="3"/><path d="M9 19h10a2 2 0 0 0 2-2V7A2 2 0 0 0 19 5H5a2 2 0 0 0-2 2v10a2 2 0 0 1-2 2h0"/><circle cx="18" cy="5" r="3"/></svg>
+                        Networking
+                    </h3>
+                    <ul class="text-gray-300 text-left space-y-3">
+                        <li class="flex flex-col items-start">
+                            <span class="text-accent-cyan font-medium">Basic Networking Architecture</span>
+                            <div class="skill-bar-container w-full" data-skill-level="75%">
+                                <div class="skill-bar-fill"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="container mx-auto px-8 py-20 text-center bg-[#101020] rounded-xl my-10 shadow-xl border border-[#202035] section-appear">
+            <h2 class="text-4xl font-bold mb-4 text-accent-cyan text-glow-cyan">Let's Connect</h2>
+            <div class="section-divider mx-auto mb-10"></div>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                Whether you're looking to build a new cloud solution, migrate existing systems, or just want to chat over coffee, feel free to reach out.
+            </p>
+            <div class="max-w-xl mx-auto space-y-8">
+                <input type="text" placeholder="Full Name" class="form-input-futuristic" />
+                <input type="email" placeholder="Email" class="form-input-futuristic" />
+                <textarea placeholder="Share your thoughts..." rows="6" class="form-input-futuristic"></textarea>
+                <button class="w-full py-4 rounded-lg text-xl font-semibold text-white btn-primary-futuristic">
+                    <span>Send Message</span>
+                </button>
+            </div>
+
+            <div class="mt-20">
+                <h3 class="text-3xl font-semibold text-accent-violet mb-8">Find Me on Social Media</h3>
+                <div class="flex justify-center space-x-8">
+                    <a href="https://www.linkedin.com/in/khalid-ameena6674a255" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent-cyan transition duration-300 transform hover:scale-125 filter drop-shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" class="icon lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                    </a>
+                    <a href="https://github.com/khalidameen872" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent-cyan transition duration-300 transform hover:scale-125 filter drop-shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" class="icon lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c.5-.1 1.5-.1 2-.2 1.5-.4 2.5-1.5 2.5-3s-.9-2.5-2.5-3c.3-.1.7-.1 1-.2 1.3-.4 2-1.3 2-2.5 0-1.2-.8-2-2-2.5-.2-.1-.5-.1-.7-.1-1.3-.4-2-.8-2.5-1.5-.2-.3-.5-.7-.8-1.3-1.3-.8-2.5-1.2-3.8-1.2-1.3 0-2.5.4-3.8 1.2-.3.6-.6 1-.8 1.3-.5.7-1.2 1.6-2.5 1.5-.4.1-.7.1-1 .2-1.6.5-2.5 1.4-2.5 2.5 0 1.2.7 2.1 2 2.5.3.1.7.1 1 .2 1.6.5 2.5 1.6 2.5 3s-1 2.5-2.5 3c-.5.1-1.5-.1-2 .2-.6.1-.9.2-1.2.3-.4.2-.7.4-1 .6-.6.4-1.3.8-2 1.2-.7.4-1.3.8-2 1.3-.7.5-1.3 1-1.8 1.5-.5.5-1 1-1.4 1.5C2 22 2 22 2 22c-.6.6-1.2 1.3-1.7 2H22c-.5-.7-1.1-1.4-1.7-2-.4-.5-.9-1-1.4-1.5-.7-.5-1.3-1-2-1.5-.7-.4-1.3-.8-2-1.2-.3-.2-.6-.4-1-.6-.3-.1-.6-.2-.9-.3-.5-.1-1.5-.1-2-.2Z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#101020] py-10 text-center text-gray-400 border-t border-[#202035]">
+        <p class="text-sm">&copy; 2025 KHALID. All rights reserved.</p>
+        <p class="text-xs mt-2">Built with <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" class="inline-block text-rose-500 mx-1 lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5L12 22Z"/></svg> & Code.</p>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Mobile menu toggle functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenuOverlay.classList.remove('hidden');
+        });
+
+        closeMobileMenuButton.addEventListener('click', () => {
+            mobileMenuOverlay.classList.add('hidden');
+        });
+
+        // Close mobile menu when a link inside it is clicked
+        mobileMenuOverlay.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuOverlay.classList.add('hidden');
+            });
+        });
+
+        // Intersection Observer for section fade-in animation and skill bars
+        const sections = document.querySelectorAll('.section-appear');
+        const skillBarContainers = document.querySelectorAll('.skill-bar-container');
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // If it's the skills section, trigger skill bar animations
+                    if (entry.target.id === 'skills') {
+                        skillBarContainers.forEach(container => {
+                            const skillLevel = container.dataset.skillLevel;
+                            const fillElement = container.querySelector('.skill-bar-fill');
+                            if (fillElement) {
+                                fillElement.style.width = skillLevel;
+                            }
+                        });
+                    }
+                } else {
+                    entry.target.classList.remove('is-visible');
+                    // Reset skill bars if section scrolls out of view (optional)
+                    if (entry.target.id === 'skills') {
+                         skillBarContainers.forEach(container => {
+                            const fillElement = container.querySelector('.skill-bar-fill');
+                            if (fillElement) {
+                                fillElement.style.width = '0%';
+                            }
+                        });
+                    }
+                }
+            });
+        }, {
+            threshold: 0.15
+        });
+
+        sections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        // Dynamic background pattern for Hero section
+        const heroSectionPattern = document.querySelector('.hero-section-pattern');
+        if (heroSectionPattern) {
+            function createRandomLine() {
+                const line = document.createElement('div');
+                line.classList.add('line');
+                const width = Math.random() * 80 + 20;
+                line.style.width = `${width}vw`;
+                const yPos = Math.random() * 100;
+                line.style.setProperty('--y', `${yPos}vh`);
+
+                const duration = Math.random() * 10 + 10;
+                line.style.animationDuration = `${duration}s`;
+                line.style.animationDelay = `-${Math.random() * duration}s`;
+
+                heroSectionPattern.appendChild(line);
+
+                line.addEventListener('animationend', () => {
+                    line.remove();
+                    createRandomLine();
+                });
+            }
+
+            for (let i = 0; i < 20; i++) {
+                createRandomLine();
+            }
+        }
+    </script>
+</body>
+</html>
